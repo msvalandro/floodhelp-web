@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  
+    :focus {
+      outline: 0;
+      box-shadow: theme('colors.purple')
+    }
+  }
+
+  body {
+    @apply bg-background text-base-text;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body, input, textarea, button {
+    font: 400 1rem 'Roboto', sans-serif;
+  }
+}
