@@ -10,12 +10,12 @@
   
     :focus {
       outline: 0;
-      box-shadow: theme('colors.purple')
+      box-shadow: theme('colors.primary')
     }
   }
 
   body {
-    @apply bg-background text-base-text;
+    @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
   }
 
