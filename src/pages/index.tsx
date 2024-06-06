@@ -4,10 +4,14 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Home | FloodHelp</title>
+        <title>Ajudar | FloodHelp</title>
       </Head>
 
-      <h1>hello world.</h1>
+      <>
+        <p className="text-l text-foreground">
+          Ajude as vítimas de enchentes e demais desastres naturais do Brasil
+        </p>
+      </>
     </>
   )
 }
