@@ -8,7 +8,10 @@ export function Header() {
   async function handleLogin() {
     try {
       const account = await login()
+
       setWallet(account)
+
+      window.location.reload()
     } catch (error) {
       console.error(error)
       alert((error as Error).message)

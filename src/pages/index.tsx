@@ -18,7 +18,6 @@ export default function Home() {
       }
     } catch (error) {
       console.log(error)
-      alert((error as Error).message)
     }
   }
 
@@ -44,7 +43,7 @@ export default function Home() {
             ))}
           </ul>
         ) : (
-          <p>
+          <p className="flex h-full items-center justify-center text-l text-secondary-foreground">
             Connecte sua carteira MetaMask no botão Entrar para ajudar ou pedir
             ajuda.
           </p>
