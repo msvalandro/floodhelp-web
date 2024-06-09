@@ -2,8 +2,6 @@ import Web3 from 'web3'
 
 import ABI from './ABI.json'
 
-const CONTRACT_ADDRESS = '0x188AbD89c86eb716F9c668d55728c92C779246c1'
-
 export interface DonationRequest {
   id: number
   title: string
@@ -30,7 +28,13 @@ function getContract() {
 
   const web3 = new Web3(window.ethereum)
 
-  const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS, { from })
+  const contract = new web3.eth.Contract(
+    ABI,
+    process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
+    {
+      from,
+    },
+  )
 
   return contract
 }
