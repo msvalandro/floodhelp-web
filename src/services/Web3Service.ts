@@ -14,6 +14,27 @@ export interface DonationRequest {
   author: string
 }
 
+interface CreateRequestParams
+  extends Omit<DonationRequest, 'id' | 'balance' | 'author'> {}
+
+function getContract() {
+  if (!window.ethereum) {
+    throw new Error('Sem MetaMask instalado.')
+  }
+
+  const from = localStorage.getItem('wallet')
+
+  if (!from) {
+    throw new Error('Carteira não é válida.')
+  }
+
+  const web3 = new Web3(window.ethereum)
+
+  const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS, { from })
+
+  return contract
+}
+
 export async function login() {
   if (!window.ethereum) {
     throw new Error('Sem MetaMask instalado.')
@@ -32,23 +53,38 @@ export async function login() {
 }
 
 export async function getOpenRequests(lastId = 0) {
-  if (!window.ethereum) {
-    throw new Error('Sem MetaMask instalado.')
-  }
+  const contract = getContract()
 
-  const from = localStorage.getItem('wallet')
-
-  if (!from) {
-    throw new Error('Carteira não é válida.')
-  }
-
-  const web3 = new Web3(window.ethereum)
-
-  const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS, { from })
-  console.log(contract)
   const requests: DonationRequest[] = await contract.methods
     .getOpenRequests(lastId + 1, 10)
     .call()
 
   return requests.filter((request) => request.title !== '')
+}
+
+export async function createRequest({
+  title,
+  description,
+  contact,
+  goal,
+}: CreateRequestParams) {
+  const contract = getContract()
+
+  return contract.methods
+    .openRequest(title, description, contact, Web3.utils.toWei(goal, 'ether'))
+    .send()
+}
+
+export async function closeRequest(id: number) {
+  const contract = getContract()
+
+  return contract.methods.closeRequestByAuthor(id).send()
+}
+
+export async function donate(id: number, valueInBnb: number) {
+  const contract = getContract()
+
+  return contract.methods
+    .donate(id)
+    .send({ value: Web3.utils.toWei(valueInBnb, 'ether') })
 }

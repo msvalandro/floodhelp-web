@@ -1,7 +1,7 @@
 import { generateAvatarURL } from '@cfx-kit/wallet-avatar'
 import Web3 from 'web3'
 
-import { DonationRequest } from '@/services/Web3Service'
+import { closeRequest, donate, DonationRequest } from '@/services/Web3Service'
 
 interface RequestProps {
   data: DonationRequest
@@ -13,6 +13,44 @@ export function Request({ data }: RequestProps) {
 
   function formatWei(wei: number) {
     return Web3.utils.fromWei(wei, 'ether')
+  }
+
+  async function handleCloseRequest() {
+    if (!confirm('Tem certeza que deseja fechar este pedido?')) {
+      return
+    }
+
+    try {
+      await closeRequest(data.id)
+
+      alert(
+        'Pedido fechado com sucesso. Em alguns minutos deixará de ser visto no site.',
+      )
+
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+      alert((error as Error).message)
+    }
+  }
+
+  async function handleDonate() {
+    const donation = prompt('Quanto deseja doar? (BNB)')
+
+    if (!donation) {
+      return
+    }
+
+    try {
+      await donate(data.id, Number(donation))
+
+      alert('Doação realizada com sucesso. Obrigado por ajudar!')
+
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+      alert((error as Error).message)
+    }
   }
 
   return (
@@ -43,14 +81,16 @@ export function Request({ data }: RequestProps) {
       {isRequestAuthor ? (
         <button
           type="button"
-          className="ml-auto flex h-[32px] items-center rounded-md border-border bg-destructive p-4 text-background"
+          onClick={handleCloseRequest}
+          className="ml-auto flex h-[32px] items-center rounded-md border-border bg-destructive px-3 text-background"
         >
           Fechar
         </button>
       ) : (
         <button
           type="button"
-          className="ml-auto flex h-[32px] items-center rounded-md border-border bg-primary p-4 text-background"
+          onClick={handleDonate}
+          className="ml-auto flex h-[32px] items-center rounded-md border-border bg-primary px-3 text-background"
         >
           &#36; Ajudar
         </button>

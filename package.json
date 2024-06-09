@@ -10,10 +10,13 @@
   },
   "dependencies": {
     "@cfx-kit/wallet-avatar": "^0.0.5",
+    "@hookform/resolvers": "^3.6.0",
     "next": "14.2.3",
     "react": "^18",
     "react-dom": "^18",
-    "web3": "^4.9.0"
+    "react-hook-form": "^7.51.5",
+    "web3": "^4.9.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
